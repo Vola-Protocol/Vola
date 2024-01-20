@@ -7,22 +7,22 @@ async function deploy() {
   [account, account2, account3] = await ethers.getSigners();
 
 
-  const Lib = await ethers.getContractFactory("MathVol");
-  const lib = await Lib.deploy();
-  console.log(lib);
-  await lib.deploymentTransaction().wait(1);
+  const lib = await ethers.deployContract("MathVol");
+  
+  await lib.waitForDeployment();
 
   console.log(`Deploying contracts using ${account.address}`);
-  console.log(`Deployment address ${lib.address}`);
+  console.log(`Deployment address ${lib.target}`);
 
-  const volatility = await ethers.getContractFactory("Volatility", {
+  const volatility = await ethers.deployContract("Volatility",[2500000000000, 2000000000, priceFeed]
+  ,{
     signer: account,
     libraries: {
-        MathVol: lib.address,
+        MathVol: lib.target,
       }
   });
-  const contract = await volatility.deploy(2500000000000, 2000000000, priceFeed); 
-  await contract.deployed();
+  
+  await volatility.waitForDeployment();;
 
 
 }
