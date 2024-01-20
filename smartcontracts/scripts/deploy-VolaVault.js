@@ -2,6 +2,7 @@ const { ethers } = require("hardhat");
 const ERC20ABI = require("./ERC20ABI.json");
 
 const ERC20_TOKEN_ADDRESS = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2";
+const priceFeed = "0xA39434A63A52E749F02807ae27335515BA4b07F7";
 
 // Deploy function
 async function deploy() {
@@ -18,6 +19,12 @@ async function deploy() {
     1000 / Number(await VolaVault.convertToShares(1)),
     "Asset"
   );
+
+  //const volatility = await ethers.getContractFactory("Volatility", {
+  //  signer: owner,
+  //});
+  //const contract = await volatility.deploy(2500000000000, 2000000000, priceFeed); 
+  //await contract.deployed();
 
   // Use account2 as the signer for the first weth contract
   const weth1 = new ethers.Contract(ERC20_TOKEN_ADDRESS, ERC20ABI, account2);
